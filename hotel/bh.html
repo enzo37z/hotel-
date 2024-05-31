@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Hôtel</title>
+    <link rel="stylesheet" href="bh.css">
+</head>
+<body>
+    <div class="container">
+        <div class="title-box">
+            <center><h1>Booking Hôtel</h1></center>
+            <p>Indiquer vos dates de réservations. Toute annulation doit se faire 48h avant</p>
+        </div>
+
+        <div id="booking-form-container">
+            <form id="booking-form" action="#">
+                <table>
+                    <tr>
+                        <th><label for="adults">Adultes:</label></th>
+                        <td>
+                            <button type="button" id="decrease-adults" onclick="decreaseAdults()">-</button>
+                            <input type="number" id="adults" name="adults" value="0" min="0" required>
+                            <button type="button" id="increase-adults" onclick="increaseAdults()">+</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="children">Enfants:</label></th>
+                        <td>
+                            <button type="button" id="decrease-children" onclick="decreaseChildren()">-</button>
+                            <input type="number" id="children" name="children" value="0" min="0" required>
+                            <button type="button" id="increase-children" onclick="increaseChildren()">+</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="rooms">Chambre:</label></th>
+                        <td>
+                            <button type="button" id="decrease-rooms" onclick="decreaseRooms()">-</button>
+                            <input type="number" id="rooms" name="rooms" value="0" min="0" required>
+                            <button type="button" id="increase-rooms" onclick="increaseRooms()">+</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="check-in">Date de départ:</label></th>
+                        <td><input type="date" id="check-in" name="check-in" required></td>
+                    </tr>
+                    <tr>
+                        <th><label for="check-out">Date d'arrivée:</label></th>
+                        <td><input type="date" id="check-out" name="check-out" required></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center;"><input type="submit" value="Réserver"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <div id="reservation-summary"></div>
+
+        <script>
+            function decreaseAdults() {
+                let adults = document.getElementById("adults");
+                if (adults.value > 0) {
+                    adults.value--;
+                }
+            }
+
+            function increaseAdults() {
+                let adults = document.getElementById("adults");
+                adults.value++;
+            }
+
+            function decreaseChildren() {
+                let children = document.getElementById("children");
+                if (children.value > 0) {
+                    children.value--;
+                }
+            }
+
+            function increaseChildren() {
+                let children = document.getElementById("children");
+                children.value++;
+            }
+
+            function decreaseRooms() {
+                let rooms = document.getElementById("rooms");
+                if (rooms.value > 0) {
+                    rooms.value--;
+                }
+            }
+
+            function increaseRooms() {
+                let rooms = document.getElementById("rooms");
+                rooms.value++;
+            }
+
+            document.getElementById("booking-form").addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                let adults = document.getElementById("adults").value;
+                let children = document.getElementById("children").value;
+                let rooms = document.getElementById("rooms").value;
+                let checkIn = document.getElementById("check-in").value;
+                let checkOut = document.getElementById("check-out").value;
+
+                if (new Date(checkIn) >= new Date(checkOut)) {
+                    alert("La date de départ doit être avant la date d'arrivé.");
+                    return;
+                }
+
+                if (children > 0) {
+                    let childAges = [];
+                    for (let i = 0; i < children; i++) {
+                        let age = prompt("Entrer l'age de l'enfant " + (i + 1) + ":");
+                        if (age < 0 || age > 17) {
+                            alert("L'age des enfant doit être inferieur à 17.");
+                            return;
+                        }
+                        childAges.push(age);
+                    }
+                    children = childAges.join(",");
+                }
+
+                let summary = document.getElementById("reservation-summary");
+                summary.innerHTML = "<h2>Détail de la Réservation:</h2>" +
+                    "Adultes: " + adults + "<br>" +
+                    "Ages Enfants: " + children + "<br>" +
+                    "Chambres: " + rooms + "<br>" +
+                    "Départ: " + checkIn + "<br>" +
+                    "Arrivée: " + checkOut;
+            });
+        </script>
+    </div>
+</body>
+</html>
+
+
+
